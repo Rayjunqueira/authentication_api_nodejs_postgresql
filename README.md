@@ -5,13 +5,15 @@
 # Sobre o Projeto
 
 Projeto de autenticação backend completo desenvolvido em Node/Express e Javascript. 
-No projeto é incluído CRUD completo de usuário, autenticação via e-mail de usuário e um sistema de recuperação de senha via JWT.
+No projeto é incluído CRUD completo de usuário, autenticação via e-mail de usuário e um sistema de recuperação de senha via JWT, totalmente seguro 
+com uso de criptografia dentro do banco de dados para senhas e tokens de acesso ao usuário.
 
 # Tecnologias usadas
 
  <p>◼ Nodejs </p>
  ◼ Express </p>
  ◼ Sequelize </p>
+ ◼ Bcrypt </p>
  ◼ Postgresql </p>
  ◼ Nodemailer </p>
  ◼ JWT </p>
