@@ -22,95 +22,60 @@ No projeto é incluído CRUD completo de usuário, autenticação via e-mail de 
 
 # Configurando Banco de Dados Sequelize na sua máquina
 
-```
 É necessário que dentro da pasta src seja criado o arquivo "config.json" de configuração do seu banco de dados, assim como é dado
 o caminho dentro das configurações do banco e de migrations dentro da pasta ".sequelizerc".
 
 dentro de "config.json" é necessário enviar
 
 ```
+{
+  "development": {
+    "username": "NOME DE USUARIO DE SUA DB",
+    "password": "SENHA DE SUA DB",
+    "database": "NOME DO BANCO",
+    "host": "HOST ONDE ESTÁ RODANDO SUA DB",
+    "dialect": "QUAL SEU SQL UTILIZADO(No caso da Aplicação, postgresql)"
+  },
+  "test": { 
+    "username": "NOME DE USUARIO DE SUA DB",
+    "password": "SENHA DE SUA DB",
+    "database": "NOME DO BANCO",
+    "host": "HOST ONDE ESTÁ RODANDO SUA DB",
+    "dialect": "QUAL SEU SQL UTILIZADO(No caso da Aplicação, postgresql)"
+  },
+  "production": {
+    "username": "NOME DE USUARIO DE SUA DB",
+    "password": "SENHA DE SUA DB",
+    "database": "NOME DO BANCO",
+    "host": "HOST ONDE ESTÁ RODANDO SUA DB",
+    "dialect": "QUAL SEU SQL UTILIZADO(No caso da Aplicação, postgresql)"
+  }
+}
+```
+Dentro de Database/config também é recomendado colocar as informações necessárias de conexão com seu Banco de Dados!
 
 ```
-DATABASE_HOST = Host 
+DATABASE_PASSWORD = Senha do seu banco de dados 
 DATABASE_USERNAME = Usuário de seu banco de dados
-DATABASE_PASSWORD = Senha de seu banco de dados
 DATABASE_NAME = Nome do seu banco de dados
 ```
 
-Pasta de diretório de migrations e entidades.
-
-```
-entities: [`${__dirname}/../entities/*.{ts,js}`],
-migrations: [`${__dirname}/migrations/*.{ts,js}`],
-```
-
-
 # Criando migrations
 
-1 - Crie uma nova entidade
+1 - Gere sua migration com os atributos que você deseja enviar. Ex:
 
-```
-@Entity('example')
-export class Example {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+    npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string
 
-    @Column()
-    test: string;
-    }
-}
-```
-2 - Gerar migration
+2 - Modifique o model criado
 
-    npm run migration:generate
+3 - Rode a migration
 
-3 - Rodar migration
+     npx sequelize-cli db:migrate
 
-     npm run migration:run
+# Configurar Sistema de envio de e-mail via Nodemailer para recuperação de senha
 
-# Configurar Sistema de envio de e-mail via Nodemailer
-
-```
-import nodemailer from 'nodemailer';
-
-type EmailType = {
-    from: string;
-    to: string;
-    subject: string;
-    text: string;
-    html: string;
-}
-
-const port = process.env.EMAIL_PORT as number | undefined;
-
-const sendEmail = async ({ from, to, subject, text, html }: EmailType ) => {
-    try {
-        const transport = nodemailer.createTransport({
-            host: process.env.EMAIL_HOST as string,
-            port: port,
-            auth: {
-              user: process.env.EMAIL_AUTH_USER as string,
-              pass: process.env.EMAIL_AUTH_PASS as string,
-            }
-        });
-
-        await transport.sendMail({
-            from: from,
-            to: to,
-            subject: subject,
-            text: text,
-            html: html,
-        })
-    
-        console.log('Email send succesfully')
-        
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-export default sendEmail;
-```
+Dentro de utils/Mailer é necessário configurar as informações de configuração de uma hospedagem de envio de e-mails. Para testes, é recomendado 
+utilizar a plataforma do Mailtrap Box
 
 ```
 EMAIL_PORT = Porta de e-mail
@@ -122,7 +87,7 @@ EMAIL_AUTH_PASS = Senha E-mail
 
 1 - Clone o repositório
 
-    git clone https://github.com/Routfin/API_Auth_PostgreSQL_Jwt_TypeORM_Express_Typescript.git
+    git clone git@github.com:Routfin/authentication_api_nodejs_postgresql.git
 
 2 - Instalar os pacotes NPM
 
@@ -130,22 +95,7 @@ EMAIL_AUTH_PASS = Senha E-mail
     
 3 - Rodar aplicação em nodemon/localhost
     
-    npm run dev
- 
-# Ativar usuário 
-
-Ao criar um novo usuário é necessário acessar a rota post /activate para ativar usuário.
-
-```
-email: *emaildeusuario@email.com*
-token: *token de ativação enviado por email*
-```
-
-## Rodando com uma API de autenticação Real
-
-Basta remover os Mocks e certificar de colocar o link de uma API real em baseURL e certificar de corrigir as rotas se necessário.
-
-![mocks](https://user-images.githubusercontent.com/99502194/188183799-4ccc1f34-2e29-4c2c-834c-0ce0b503e80f.gif)
+    npm start
 
 
 ## Contribua com o projeto
